@@ -1170,6 +1170,9 @@
               <option value="Rejeitado">Rejeitado</option>
               <option value="Processado">Processado</option>
             </select>
+            <select class="filter-select" id="filter-ano" onchange="applyFilters()">
+              <option value="">Ano: Todos</option>
+            </select>
             <select class="filter-select" id="filter-mes" onchange="applyFilters()">
               <option value="">Mês: Todos</option>
               <option value="1">Janeiro</option>
@@ -1185,9 +1188,6 @@
               <option value="11">Novembro</option>
               <option value="12">Dezembro</option>
             </select>
-            <select class="filter-select" id="filter-ano" onchange="applyFilters()">
-              <option value="">Ano: Todos</option>
-            </select>
             <div class="page-size-wrap">
               <label>Linhas:</label>
               <select class="page-size-select" id="page-size" onchange="pageSizeChanged()">
@@ -1195,7 +1195,7 @@
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
-                <option value="0">Tudo</option>
+                <option value="0">Todas</option>
               </select>
             </div>
             <span class="results-count" id="results-count"></span>
@@ -1800,7 +1800,7 @@ async function loadData(){
     allData=DEMO;
   }
   currentPage=1;
-  populateYearFilter();
+  populateAnoFilter();
   applyFilters();
 }
 
@@ -1817,16 +1817,16 @@ function applyFilters(){
   const q     =document.getElementById('search-input').value.trim().toLowerCase();
   const tipo  =document.getElementById('filter-tipo').value;
   const status=document.getElementById('filter-status').value;
-  const mes   =document.getElementById('filter-mes').value;
   const ano   =document.getElementById('filter-ano').value;
+  const mes   =document.getElementById('filter-mes').value;
   filteredData=allData.filter(r=>{
     if(tipo   &&r.Tipo!==tipo)    return false;
     if(status &&r.Status!==status)return false;
-    if(mes||ano){
+    if(ano||mes){
       const d=new Date(r.Data);
       if(isNaN(d))return false;
-      if(mes&&(d.getMonth()+1)!==parseInt(mes))return false;
-      if(ano&&d.getFullYear()!==parseInt(ano))return false;
+      if(ano&&String(d.getFullYear())!==ano)return false;
+      if(mes&&String(d.getMonth()+1)!==mes)return false;
     }
     if(q){const hay=[r.Cliente,r.Descritivo,r.Referencia,r.Transacao,r.Conta,r.Categoria].map(s=>String(s??'').toLowerCase()).join(' ');if(!hay.includes(q))return false;}
     return true;
@@ -1837,6 +1837,14 @@ function applyFilters(){
   renderChart();
   initChartMensal();
   renderTable();
+}
+
+function populateAnoFilter(){
+  const sel=document.getElementById('filter-ano');
+  const current=sel.value;
+  const anos=[...new Set(allData.map(r=>{const d=new Date(r.Data);return isNaN(d)?null:d.getFullYear();}).filter(Boolean))].sort((a,b)=>b-a);
+  sel.innerHTML='<option value="">Ano: Todos</option>'+anos.map(a=>`<option value="${a}">${a}</option>`).join('');
+  if(anos.includes(parseInt(current)))sel.value=current;
 }
 
 function sortBy(col){
@@ -1859,14 +1867,7 @@ function updateSortUI(){
     if(th.dataset.col===sortCol)th.classList.add(sortDir);
   });
 }
-function pageSizeChanged(){const v=document.getElementById('page-size').value;pageSize=v==='0'?0:parseInt(v);currentPage=1;renderTable();}
-function populateYearFilter(){
-  const years=[...new Set(allData.map(r=>{const d=new Date(r.Data);return isNaN(d)?null:d.getFullYear();}).filter(Boolean))].sort((a,b)=>b-a);
-  const sel=document.getElementById('filter-ano');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">Ano: Todos</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  if(cur&&years.includes(parseInt(cur)))sel.value=cur;
-}
+function pageSizeChanged(){const v=parseInt(document.getElementById('page-size').value);pageSize=v===0?Infinity:v;currentPage=1;renderTable();}
 
 /* ─── KPIs ─── */
 function renderKPIs(){
@@ -2269,10 +2270,10 @@ function renderTable(){
   count.textContent=total>0?`${total} resultado${total!==1?'s':''}`:'' ;
   if(total===0){table.classList.add('hidden');empty.classList.remove('hidden');pagW.classList.add('hidden');return;}
   empty.classList.add('hidden');table.classList.remove('hidden');
-  const totalPages=pageSize===0?1:Math.ceil(total/pageSize);
+  const totalPages=pageSize===Infinity?1:Math.ceil(total/pageSize);
   if(currentPage>totalPages)currentPage=totalPages;
-  const start=pageSize===0?0:(currentPage-1)*pageSize;
-  const page=pageSize===0?filteredData:filteredData.slice(start,start+pageSize);
+  const start=pageSize===Infinity?0:(currentPage-1)*pageSize;
+  const page=pageSize===Infinity?filteredData:filteredData.slice(start,start+pageSize);
   document.getElementById('table-body').innerHTML=page.map(r=>{
     const vc=r.Tipo==='Crédito'?'valor-credito':'valor-debito';
     const vs=r.Tipo==='Crédito'?'+':'-';
@@ -2302,9 +2303,9 @@ function renderTable(){
 /* ─── PAGINAÇÃO ─── */
 function renderPag(total,totalPages){
   const pagW=document.getElementById('pag-wrap');
-  if(pageSize===0||totalPages<=1){pagW.classList.add('hidden');return;}
+  if(totalPages<=1){pagW.classList.add('hidden');return;}
   pagW.classList.remove('hidden');
-  const s=(currentPage-1)*pageSize+1,e=Math.min(currentPage*pageSize,total);
+  const s=(currentPage-1)*(pageSize===Infinity?total:pageSize)+1,e=Math.min(pageSize===Infinity?total:currentPage*pageSize,total);
   document.getElementById('pag-info').textContent=`${s}–${e} de ${total}`;
   let html=`<button class="pag-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fa-solid fa-chevron-left"></i></button>`;
   buildPageRange(currentPage,totalPages).forEach(p=>{
@@ -2320,7 +2321,7 @@ function buildPageRange(cur,tot){
   if(cur>=tot-3)return[1,'…',tot-4,tot-3,tot-2,tot-1,tot];
   return[1,'…',cur-1,cur,cur+1,'…',tot];
 }
-function goPage(p){if(pageSize===0)return;const t=Math.ceil(filteredData.length/pageSize);if(p<1||p>t)return;currentPage=p;renderTable();}
+function goPage(p){const t=Math.ceil(filteredData.length/pageSize);if(p<1||p>t)return;currentPage=p;renderTable();}
 
 /* ─── MODAL FORMULÁRIO ─── */
 function abrirModalForm(id){

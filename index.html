@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA na Pratica - Torne-se um Consultor RPA de Sucesso</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
+        :root { --primary: #4A00E0; --secondary: #8E2DE2; --accent: #f5a623; }
+        header {
+            background: linear-gradient(135deg, #4A00E0, #8E2DE2);
+            color: white; padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; }
+        nav a:hover { opacity: 0.8; }
+        .hero {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 100%);
+            color: white; text-align: center; padding: 100px 40px;
+        }
+        .hero h1 { font-size: 2.8rem; line-height: 1.3; max-width: 800px; margin: 0 auto 20px; }
+        .hero h1 span { color: #f5a623; }
+        .hero p { font-size: 1.2rem; max-width: 650px; margin: 20px auto 40px; opacity: 0.9; }
+        .btn-primary {
+            background: #f5a623; color: #fff; padding: 18px 45px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: bold; text-decoration: none; display: inline-block;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-3px); }
+        section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+        section h2 { font-size: 2rem; text-align: center; margin-bottom: 50px; color: #4A00E0; }
+        section h2 span { color: #f5a623; }
+        .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .audience-card {
+            background: #f8f5ff; border-left: 5px solid #4A00E0;
+            border-radius: 10px; padding: 25px; font-size: 0.95rem; line-height: 1.6;
+        }
+        .highlights-bg { background: #f8f5ff; }
+        .highlights-inner { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
+        .highlights-inner h2 { font-size: 2rem; text-align: center; margin-bottom: 50px; color: #4A00E0; }
+        .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+        .highlight-item .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .highlight-item h3 { color: #4A00E0; margin-bottom: 8px; }
+        .highlight-item p { font-size: 0.9rem; color: #666; }
+        .instructors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 30px; }
+        .instructor-card {
+            background: white; border-radius: 15px; padding: 30px 25px; text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 5px solid #4A00E0;
+        }
+        .avatar {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #4A00E0, #8E2DE2);
+            border-radius: 50%; margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.8rem; font-weight: bold;
+        }
+        .instructor-card h3 { color: #4A00E0; margin-bottom: 10px; }
+        .instructor-card p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+        .testimonials { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+        .testimonials h2 { font-size: 2rem; text-align: center; margin-bottom: 50px; color: #4A00E0; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .testimonial-card {
+            background: white; border-radius: 15px; padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left: 4px solid #8E2DE2;
+        }
+        .testimonial-card .role { color: #4A00E0; font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; }
+        .testimonial-card .name { font-size: 1rem; font-weight: bold; margin-bottom: 12px; }
+        .testimonial-card .quote { font-size: 0.9rem; color: #555; line-height: 1.6; font-style: italic; }
+        .cta-section {
+            background: linear-gradient(135deg, #4A00E0, #8E2DE2);
+            color: white; text-align: center; padding: 80px 40px;
+        }
+        .cta-section h2 { font-size: 2rem; margin-bottom: 15px; }
+        .price { font-size: 2.5rem; font-weight: bold; color: #f5a623; margin: 20px 0; }
+        .price-sub { font-size: 1rem; opacity: 0.8; margin-bottom: 30px; }
+        .btn-cta {
+            background: white; color: #4A00E0; padding: 18px 50px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: bold; text-decoration: none; display: inline-block;
+            transition: transform 0.2s;
+        }
+        .btn-cta:hover { transform: translateY(-3px); }
+        .payment-info { margin-top: 20px; opacity: 0.8; font-size: 0.9rem; }
+        footer { background: #1a1a2e; color: #aaa; text-align: center; padding: 30px 20px; font-size: 0.9rem; }
+        footer a { color: #f5a623; text-decoration: none; }
+        .guarantee { margin-top: 20px; opacity: 0.8; font-size: 0.9rem; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            header { flex-direction: column; gap: 15px; }
+            section { padding: 50px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">RPA na Pratica</div>
+    <nav>
+        <a href="#para-quem">Para Quem</a>
+        <a href="#curso">O Curso</a>
+        <a href="#instrutores">Instrutores</a>
+        <a href="#matricula">Matricula</a>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1>Torne-se um dos profissionais mais <span>bem pagos</span> da atualidade automatizando processos roboticos</h1>
+    <p>A Formacao RPA na Pratica e o treinamento mais completo em portugues para voce se tornar um Consultor RPA de Sucesso - mesmo sem experiencia anterior em programacao.</p>
+    <a href="https://rpanapratica.com.br/" target="_blank" class="btn-primary">QUERO SER ALUNO</a>
+</div>
+
+<section id="para-quem">
+    <h2>Para quem e a <span>Formacao RPA na Pratica?</span></h2>
+    <div class="audience-grid">
+        <div class="audience-card">
+            <strong>Transicao de carreira</strong><br><br>
+            Deseja realizar uma transicao de carreira para o mercado de tecnologia mesmo sem conhecimento em programacao.
+        </div>
+        <div class="audience-card">
+            <strong>Profissionais de TI</strong><br><br>
+            Ja atua na area de tecnologia mas quer ganhar mais, construir uma carreira solida, ou ser promovido rapidamente.
+        </div>
+        <div class="audience-card">
+            <strong>Sem necessidade de faculdade</strong><br><br>
+            Deseja conhecer uma profissao que nao necessita de faculdade, e que em poucos meses ja podera entrar no mercado.
+        </div>
+        <div class="audience-card">
+            <strong>Especialistas em RPA</strong><br><br>
+            Quer estudar automacao de processos roboticos (RPA) e trabalhar na area como Consultor de RPA empregado ou empreendedor.
+        </div>
+        <div class="audience-card">
+            <strong>Agregar valor ao curriculo</strong><br><br>
+            Nao quer migrar de carreira, mais sim, ganhar uma nova expertise, agregando valor ao seu curriculo imediatamente.
+        </div>
+    </div>
+</section>
+
+<div class="highlights-bg">
+    <div class="highlights-inner">
+        <h2>O que voce tera acesso</h2>
+        <div class="highlights-grid">
+            <div class="highlight-item">
+                <div class="icon">115h+</div>
+                <h3>Horas de Aula</h3>
+                <p>Conteudo gravado direto ao ponto, disponivel 24h para assistir no seu ritmo</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">Web</div>
+                <h3>Pratica Intensa</h3>
+                <p>Automacoes Web, Excel, API REST/SOAP, PDF, OCR, Desktop e muito mais</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">24/7</div>
+                <h3>Suporte Exclusivo</h3>
+                <p>Plantao de duvidas ao vivo com os instrutores especializados</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">Team</div>
+                <h3>Comunidade</h3>
+                <p>Acesso a comunidade de alunos e networking com profissionais da area</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">Cert</div>
+                <h3>Certificacao Foundation</h3>
+                <p>Preparacao completa para tirar a certificacao reconhecida pelo mercado</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">App</div>
+                <h3>App Mobile</h3>
+                <p>Acesse as aulas pelo celular e baixe para assistir offline quando quiser</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="instrutores">
+    <h2>Conheca os <span>Instrutores</span></h2>
+    <div class="instructors-grid">
+        <div class="instructor-card">
+            <div class="avatar">G</div>
+            <h3>Giovana Alegre</h3>
+            <p>20 anos de experiencia em TI. Certificada ITIL V3 Foundation, Cobit e DevOps. Pioneira em RPA no Brasil e criadora do Metodo ATA.</p>
+        </div>
+        <div class="instructor-card">
+            <div class="avatar">V</div>
+            <h3>Victor Estigarribia</h3>
+            <p>Fascinado por tecnologia desde jovem. Fundou sua propria empresa em 2011. Profissional renomado no universo do RPA com solucoes inovadoras.</p>
+        </div>
+        <div class="instructor-card">
+            <div class="avatar">R</div>
+            <h3>Raquel Arzao</h3>
+            <p>Engenheira que fez transicao para RPA aos 26 anos. Especialista Senior em Blue Prism e instrutora oficial da ferramenta na Formacao.</p>
+        </div>
+        <div class="instructor-card">
+            <div class="avatar">W</div>
+            <h3>Wilber Godoy</h3>
+            <p>Solida formacao em TI. Especialista em automacao com Python e RPA. Referencia em melhores praticas de automacao de processos.</p>
+        </div>
+    </div>
+</section>
+
+<div style="background:#f8f5ff;">
+    <div class="testimonials">
+        <h2>Depoimentos dos <span style="color:#f5a623;">Alunos</span></h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="role">Desenvolvedor RPA</div>
+                <div class="name">Anderson Samoyeden</div>
+                <div class="quote">Uma ferramenta low code que poderia acelerar meu inicio na area. Foi a melhor decisao que tomei. Apos 10 anos atuando em marketing, resolvi migrar de area.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="role">Head de Hiperautomacao</div>
+                <div class="name">Tayse Caroline Will</div>
+                <div class="quote">Os conteudos foram apresentados de forma clara e objetiva. Destaco especialmente a importancia das aulas praticas que fizeram toda a diferenca no meu aprendizado.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="role">Analista de Processos</div>
+                <div class="name">Elias Fochesatto</div>
+                <div class="quote">O primeiro passo de uma jornada nao a define por completo, mas impacta profundamente no rumo, ritmo e resultados da caminhada. E neste sentido, o RPA na Pratica foi excepcional.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="role">Desenvolvedora de Software</div>
+                <div class="name">Bruna Remiao Rasch</div>
+                <div class="quote">Participar desse curso foi uma grande satisfacao e um otimo aprendizado. O conteudo e bem completo e o suporte da professora e a didatica fizeram toda a diferenca.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section" id="matricula">
+    <h2>Faca sua Matricula Agora</h2>
+    <p>Invista na profissao mais promissora e bem remunerada da atualidade</p>
+    <div class="price">12x de R$ 299,11</div>
+    <div class="price-sub">ou R$ 2.997 a vista &bull; Pix, Boleto ou Cartao</div>
+    <a href="https://rpanapratica.com.br/" target="_blank" class="btn-cta">FAZER MINHA MATRICULA AGORA</a>
+    <div class="guarantee">7 dias de garantia &bull; Acesso por 1 ano &bull; Suporte exclusivo &bull; Parcele em ate 12x</div>
+</div>
+
+<footer>
+    <p>Copyright 2024 RPA na Pratica - Todos os direitos reservados</p>
+    <p style="margin-top:8px;">
+        Site oficial: <a href="https://rpanapratica.com.br/" target="_blank">rpanapratica.com.br</a> |
+        Suporte: <a href="mailto:treinamento@dtconsulting.com.br">treinamento@dtconsulting.com.br</a>
+    </p>
+</footer>
+
+</body>
+</html>
